@@ -21,6 +21,20 @@
             // This function will open a file picker dialog
             // and allow the user to select a photo to upload
             console.log('Uploading photo');
+            var uploadPhotoDiv = document.getElementById('upload-photo');
+            // Display a loading spinner
+            uploadPhotoDiv.innerHTML = '<img src="loading-spinner.gif" alt="Loading spinner" />';
+            // Display a message saying "Uploading photo..."
+            uploadPhotoDiv.innerHTML += '<p>Uploading photo...</p>';
+            // After 3 seconds hide the loading spinner and message and display the photo along 
+            // Display the photo in the upload-photo div
+            // with a message saying "Photo uploaded"
+            setTimeout(function() {
+            // After 3 seconds, simulate the photo upload completion
+            // Update the upload-photo div to show the uploaded photo and a success message
+                uploadPhotoDiv.innerHTML = '<img src="src/vincentium_broken.jpg" alt="Uploaded photo" width="500" height="500" />';
+                uploadPhotoDiv.innerHTML += '<p>Photo uploaded successfully!</p>';
+            }, 3000); // 3000 milliseconds = 3 seconds
         }
     </script>
 </body>
