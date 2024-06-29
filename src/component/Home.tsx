@@ -1,8 +1,9 @@
 import React from 'react';
-import vincentium_broken from './img/vincentium_broken.jpg';
-import loading_spinner from './img/loading-spinner.gif';
-import './Style.css';
+import vincentium_broken from '../img/vincentium_broken.jpg';
+import loading_spinner from '../img/loading-spinner.gif';
+import '../css/Style.css';
 import { useState, useEffect } from "react";
+import { Button } from 'reactstrap';
 
 
 function Home() {
@@ -41,7 +42,7 @@ function Home() {
 
           <div id="upload-photo">
 
-            <button onClick={uploadPhoto}>Take a photo</button>
+            <Button onClick={uploadPhoto}>Take a photo</Button>
 
             {loading && (
               <>
@@ -60,7 +61,7 @@ function Home() {
                 <img src={photo} alt="Uploaded photo" width="500" height="500" />
                 <br />
 
-                <button onClick={deletePhoto}>Delete Photo</button>
+                <Button onClick={deletePhoto}>Delete Photo</Button>
               </>
             )}
 

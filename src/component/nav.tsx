@@ -1,5 +1,8 @@
 import React from 'react';
 import { Nav, NavItem, NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
+
+
 
 function Navbar() {
 
@@ -8,10 +11,14 @@ function Navbar() {
         <>
             <Nav>
                 <NavItem>
-                    <NavLink active href="#">Homepage</NavLink>
+                    <NavLink>
+                        <Link to='/'>Home</Link>
+                    </NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink href="#">Gallery</NavLink>
+                    <NavLink>
+                        <Link to='/Gallery'>Gallery</Link>
+                    </NavLink>
                 </NavItem>
             </Nav>
         </>
