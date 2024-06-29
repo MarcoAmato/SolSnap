@@ -9,15 +9,15 @@ function Navbar() {
 
     return (
         <>
-            <Nav>
+            <Nav className='padding'>
                 <NavItem>
                     <NavLink>
-                        <Link to='/'>Home</Link>
+                        <Link className="text" to='/'>HOME</Link>
                     </NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink>
-                        <Link to='/Gallery'>Gallery</Link>
+                        <Link className="text" to='/Gallery'>GALLERY</Link>
                     </NavLink>
                 </NavItem>
             </Nav>

@@ -10,7 +10,7 @@ function Gallery() {
 
   return (
     <>
-    <Container>
+    <Container className='marginTop'>
       <Row>
         <Col sm={4}>
           <Card style={{ width: '18rem' }}>
@@ -31,7 +31,7 @@ function Gallery() {
             <img alt="Sample" src={vincentium_broken} />
             <CardBody>
 
-              <CardTitle tag="h5">Foto 1</CardTitle>
+              <CardTitle tag="h5">Foto 2</CardTitle>
               <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
               <CardText>Gnomo strano trovato in un bosco</CardText>
               <Button>Acquista</Button>
@@ -45,7 +45,7 @@ function Gallery() {
             <img alt="Sample" src={vincentium_broken} />
             <CardBody>
 
-              <CardTitle tag="h5">Foto 1</CardTitle>
+              <CardTitle tag="h5">Foto 3</CardTitle>
               <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
               <CardText>Gnomo strano trovato in un bosco</CardText>
               <Button>Acquista</Button>
@@ -65,7 +65,7 @@ function Gallery() {
             <img alt="Sample" src={vincentium_broken} />
             <CardBody>
 
-              <CardTitle tag="h5">Foto 1</CardTitle>
+              <CardTitle tag="h5">Foto 4</CardTitle>
               <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
               <CardText>Gnomo strano trovato in un bosco</CardText>
               <Button>Acquista</Button>
@@ -80,7 +80,7 @@ function Gallery() {
             <img alt="Sample" src={vincentium_broken} />
             <CardBody>
 
-              <CardTitle tag="h5">Foto 1</CardTitle>
+              <CardTitle tag="h5">Foto 5</CardTitle>
               <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
               <CardText>Gnomo strano trovato in un bosco</CardText>
               <Button>Acquista</Button>
@@ -94,7 +94,7 @@ function Gallery() {
             <img alt="Sample" src={vincentium_broken} />
             <CardBody>
 
-              <CardTitle tag="h5">Foto 1</CardTitle>
+              <CardTitle tag="h5">Foto 6</CardTitle>
               <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
               <CardText>Gnomo strano trovato in un bosco</CardText>
               <Button>Acquista</Button>
