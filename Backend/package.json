@@ -15,5 +15,9 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "supertest": "^7.0.0"
+  },
+  "jest": {
+    "globalSetup": "./__tests__/config/jest.globalSetup.js",
+    "globalTeardown": "./__tests__/config/jest.globalTeardown.js"
   }
 }
