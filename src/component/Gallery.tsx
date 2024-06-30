@@ -4,108 +4,55 @@ import { Button, Card, CardBody, CardSubtitle, CardText, CardTitle, Col, Contain
 import vincentium_broken from '../img/vincentium_broken.jpg';
 
 
+class ImageData {
+  constructor(public name: string, public src: string, public description: string) {}
+}
+
+// Sample data for the gallery
+const images = [
+  new ImageData("Foto 1", vincentium_broken, "Gnomo strano trovato in un bosco"),
+  new ImageData("Foto 2", vincentium_broken, "Gnomo strano trovato in un bosco"),
+  new ImageData("Foto 3", vincentium_broken, "Gnomo gay"),
+  new ImageData("Foto 4", vincentium_broken, "Gnomo strano trovato in un bosco"),
+  new ImageData("Foto 5", vincentium_broken, "Gnomo strano trovato in un bosco"),
+];
+
 function Gallery() {
 
+  const renderCardsForRow = (imagesForRow: ImageData[]) => {
+    return imagesForRow.map((image, index) => (
+      <Col sm={4} key={index}>
+        <Card style={{ width: '18rem' }}>
+          <img alt={image.name} src={image.src} />
+          <CardBody>
+            <CardTitle tag="h5">{image.name}</CardTitle>
+            <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
+            <CardText>{image.description}</CardText>
+            <Button>Acquista</Button>
+          </CardBody>
+        </Card>
+      </Col>
+    ));
+  };
 
+  // Function to render rows of images
+  const renderImageRows = () => {
+    const rows = [];
+    for (let i = 0; i < images.length; i += 3) {
+      const imagesForRow = images.slice(i, i + 3);
+      rows.push(
+        <Row key={i}>
+          {renderCardsForRow(imagesForRow)}
+        </Row>
+      );
+    }
+    return rows;
+  };
 
   return (
-    <>
     <Container className='marginTop'>
-      <Row>
-        <Col sm={4}>
-          <Card style={{ width: '18rem' }}>
-            <img alt="Sample" src={vincentium_broken} />
-            <CardBody>
-
-              <CardTitle tag="h5">Foto 1</CardTitle>
-              <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
-              <CardText>Gnomo strano trovato in un bosco</CardText>
-              <Button>Acquista</Button>
-
-            </CardBody>
-          </Card>
-        </Col>
-
-        <Col sm={4}>
-          <Card style={{ width: '18rem' }}>
-            <img alt="Sample" src={vincentium_broken} />
-            <CardBody>
-
-              <CardTitle tag="h5">Foto 2</CardTitle>
-              <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
-              <CardText>Gnomo strano trovato in un bosco</CardText>
-              <Button>Acquista</Button>
-
-            </CardBody>
-          </Card>
-        </Col>
-
-        <Col sm={4}>
-          <Card style={{ width: '18rem' }}>
-            <img alt="Sample" src={vincentium_broken} />
-            <CardBody>
-
-              <CardTitle tag="h5">Foto 3</CardTitle>
-              <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
-              <CardText>Gnomo strano trovato in un bosco</CardText>
-              <Button>Acquista</Button>
-
-            </CardBody>
-          </Card>
-        </Col>
-
-      </Row>
-
-
-
-
-      <Row className="marginTop">
-        <Col sm={4}>
-          <Card style={{ width: '18rem' }}>
-            <img alt="Sample" src={vincentium_broken} />
-            <CardBody>
-
-              <CardTitle tag="h5">Foto 4</CardTitle>
-              <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
-              <CardText>Gnomo strano trovato in un bosco</CardText>
-              <Button>Acquista</Button>
-
-            </CardBody>
-          </Card>
-        </Col>
-
-
-        <Col sm={4}>
-          <Card style={{ width: '18rem' }}>
-            <img alt="Sample" src={vincentium_broken} />
-            <CardBody>
-
-              <CardTitle tag="h5">Foto 5</CardTitle>
-              <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
-              <CardText>Gnomo strano trovato in un bosco</CardText>
-              <Button>Acquista</Button>
-
-            </CardBody>
-          </Card>
-        </Col>
-
-        <Col sm={4}>
-          <Card style={{ width: '18rem' }}>
-            <img alt="Sample" src={vincentium_broken} />
-            <CardBody>
-
-              <CardTitle tag="h5">Foto 6</CardTitle>
-              <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
-              <CardText>Gnomo strano trovato in un bosco</CardText>
-              <Button>Acquista</Button>
-
-            </CardBody>
-          </Card>
-        </Col>
-
-      </Row>
-      </Container>
-    </>
+      {renderImageRows()}
+    </Container>
   );
 }
 
