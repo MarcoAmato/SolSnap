@@ -19,6 +19,16 @@ const images = [
 
 function Gallery() {
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/nfts`);
+      const data = await response.json();
+      // Update your state with this data
+    };
+    fetchData();
+  }, []);
+
+
   const renderCardsForRow = (imagesForRow: ImageData[]) => {
     return imagesForRow.map((image, index) => (
       <Col sm={4} key={index}>
