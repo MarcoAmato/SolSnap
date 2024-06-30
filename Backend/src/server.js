@@ -19,8 +19,14 @@ let nfts = []; // This will store NFT data
 app.use(express.json()); // For parsing application/json
 
 // GET
+// Test the server is running
 app.get('/server/hello', (req, res) => {
   res.json({ message: 'Hello World' });
+});
+
+// Get all NFTs
+app.get('/nfts', (req, res) => {
+  res.json(nfts);
 });
 
 // Endpoint to create an NFT
@@ -39,4 +45,8 @@ const server = app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 
-module.exports = server;
+// Export the app and a function to start the server
+module.exports.app = server;
+module.exports.start = (port) => {
+  return app.listen(port, () => console.log(`Server listening on port ${port}`));
+};
