@@ -41,7 +41,7 @@ function Gallery() {
     for (let i = 0; i < images.length; i += 3) {
       const imagesForRow = images.slice(i, i + 3);
       rows.push(
-        <Row key={i}>
+        <Row className='marginTop' key={i}>
           {renderCardsForRow(imagesForRow)}
         </Row>
       );
@@ -50,7 +50,7 @@ function Gallery() {
   };
 
   return (
-    <Container className='marginTop'>
+    <Container>
       {renderImageRows()}
     </Container>
   );
