@@ -4,7 +4,7 @@
   "description": "Backend module for an NFT photo generator",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "cd src && node server.js",
     "test": "jest"
   },
   "author": "",
