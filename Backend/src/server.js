@@ -10,6 +10,7 @@
 const express = require('express');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
+const cors = require('cors');
 
 const app = express();
 const port = 3061;
@@ -17,6 +18,7 @@ const port = 3061;
 let nfts = []; // This will store NFT data
 
 app.use(express.json()); // For parsing application/json
+app.use(cors()); // Enable CORS
 
 // GET
 // Test the server is running
