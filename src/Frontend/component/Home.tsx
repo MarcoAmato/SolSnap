@@ -34,14 +34,17 @@ function Home() {
   };
 
   const uploadPhoto = async () => {
-    if (!selectedFile) {
+    // Create a new File instance for testing
+    const testFile = new File([vincentium_broken], 'vincy.jpg', { type: 'image/png' });
+
+    if (!testFile) {
       setMessage('No file selected');
       return;
     }
     setLoading(true);
     setMessage('Uploading...');
     const formData = new FormData();
-    formData.append('picture', selectedFile);
+    formData.append('picture', testFile);
     formData.append('name', 'NFT Name');
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/create-nft`, {
@@ -80,12 +83,11 @@ function Home() {
 
           <div id="upload-photo">
 
-            <input type="file" accept="image/*" onChange={handleFileSelect}/>
+            <Button onClick={uploadPhoto}>Take a photo</Button>
 
             {loading && (
               <>
                 <br />
-
                 <img src={loading_spinner} className='marginTop' width="50" height="50" />
               </>
             )}
