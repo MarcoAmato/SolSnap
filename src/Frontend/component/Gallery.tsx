@@ -21,9 +21,16 @@ function Gallery() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/nfts`);
-      const data = await response.json();
-      // Update your state with this data
+      try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/nfts`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        // Update your state with this data
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
     };
     fetchData();
   }, []);
