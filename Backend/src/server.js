@@ -37,7 +37,7 @@ app.post('/create-nft', upload.single('picture'), (req, res) => {
     id: nfts.length + 1,
     name: req.body.name,
     description: req.body.description,
-    picture: req.file.path,
+    url: req.file.path,
   };
   nfts.push(nftData);
   res.status(201).send(nftData);

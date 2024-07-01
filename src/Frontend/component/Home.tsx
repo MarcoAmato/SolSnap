@@ -59,7 +59,15 @@ function Home() {
       });
       if (response.ok) {
         const data = await response.json();
-        setPhoto(data.url); // Assuming the response contains the URL of the uploaded photo
+        // log data in prettier format
+        console.log(JSON.stringify(data, null, 2));
+        
+        // log id
+        console.log('NFT ID:', data.id);
+        // log name
+        console.log('NFT Name:', data.name);
+        // log img url in backend
+        console.log('NFT Image URL:', data.url);
         setMessage('Photo uploaded successfully!');
       } else {
         setMessage('Upload failed');
