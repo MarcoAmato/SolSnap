@@ -8,14 +8,16 @@ class ImageData {
   constructor(public name: string, public src: string, public description: string) {}
 }
 
+let images: ImageData[] = [];
+
 // Sample data for the gallery
-const images = [
-  new ImageData("Foto 1", vincentium_broken, "Gnomo strano trovato in un bosco"),
-  new ImageData("Foto 2", vincentium_broken, "Gnomo strano trovato in un bosco"),
-  new ImageData("Foto 3", vincentium_broken, "Gnomo gay"),
-  new ImageData("Foto 4", vincentium_broken, "Gnomo strano trovato in un bosco"),
-  new ImageData("Foto 5", vincentium_broken, "Gnomo strano trovato in un bosco"),
-];
+// const images = [
+  // new ImageData("Foto 1", vincentium_broken, "Gnomo strano trovato in un bosco"),
+  // new ImageData("Foto 2", vincentium_broken, "Gnomo strano trovato in un bosco"),
+  // new ImageData("Foto 3", vincentium_broken, "Gnomo gay"),
+  // new ImageData("Foto 4", vincentium_broken, "Gnomo strano trovato in un bosco"),
+  // new ImageData("Foto 5", vincentium_broken, "Gnomo strano trovato in un bosco"),
+// ];
 
 function Gallery() {
 
@@ -28,6 +30,7 @@ function Gallery() {
         }
         const data = await response.json();
         // Update your state with this data
+        images = data.map((nft: any) => new ImageData(nft.name, nft.image, nft.description));
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
