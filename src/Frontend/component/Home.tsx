@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import vincentium_broken from '../img/vincentium_broken.jpg';
-import loading_spinner from '../img/loading-spinner.gif';
 import '../css/Style.css';
 import { Button } from 'reactstrap';
-
+import vincentium_broken from '../img/vincentium_broken.jpg';
+import loading_spinner from '../img/loading-spinner.gif';
+import { IMAGE_FOLDER } from '../../constants';
 
 function Home() {
 
@@ -43,10 +43,16 @@ function Home() {
     }
     setLoading(true);
     setMessage('Uploading...');
-    const formData = new FormData();
+    console.log('Uploading photo:', testFile.name);
+    setPhoto(testFile.name);
+
+    const formData = new FormData(); // Collect the data to send to the server
     formData.append('picture', testFile);
     formData.append('name', 'NFT Name');
     try {
+      // Delay the upload to simulate a real-world scenario
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/create-nft`, {
         method: 'POST',
         body: formData,
@@ -94,11 +100,10 @@ function Home() {
 
             {message && <p>{message}</p>}
 
-            {/* {photo && <img src={photo} alt="Uploaded photo" width="500" height="500" />} */}
-
             {photo && (
               <>
-                <img src={photo} alt="Uploaded photo" width="500" height="500" />
+              {/* Photo is located in img folder */}
+                <img src={IMAGE_FOLDER + photo} alt="Uploaded photo" width="500" height="500" />
                 <br />
 
                 <Button onClick={deletePhoto}>Delete Photo</Button>
