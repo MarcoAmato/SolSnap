@@ -35,7 +35,7 @@ function Home() {
 
   const uploadPhoto = async () => {
     // Create a new File instance for testing
-    const testFile = new File([vincentium_broken], 'vincy.jpg', { type: 'image/png' });
+    const testFile = new File([vincentium_broken], vincentium_broken, { type: 'image/png' });
 
     if (!testFile) {
       setMessage('No file selected');
@@ -44,7 +44,7 @@ function Home() {
     setLoading(true);
     setMessage('Uploading...');
     console.log('Uploading photo:', testFile.name);
-    setPhoto(testFile.name);
+    setPhoto(vincentium_broken);
 
     const formData = new FormData(); // Collect the data to send to the server
     formData.append('picture', testFile);
@@ -111,7 +111,7 @@ function Home() {
             {photo && (
               <>
               {/* Photo is located in img folder */}
-                <img src={IMAGE_FOLDER + photo} alt="Uploaded photo" width="500" height="500" />
+                <img src={photo} alt="Uploaded photo" width="200" height="200" />
                 <br />
 
                 <Button onClick={deletePhoto}>Delete Photo</Button>
