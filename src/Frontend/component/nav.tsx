@@ -11,14 +11,12 @@ function Navbar() {
         <>
             <Nav className='padding'>
                 <NavItem>
-                    <NavLink>
-                        <Link className="text" to='/'>HOME</Link>
-                    </NavLink>
+                    {/* Directly use Link component with className */}
+                    <Link className="text nav-link" to='/'>HOME</Link>
                 </NavItem>
                 <NavItem>
-                    <NavLink>
-                        <Link className="text" to='/Gallery'>GALLERY</Link>
-                    </NavLink>
+                    {/* Directly use Link component with className */}
+                    <Link className="text nav-link" to='/Gallery'>GALLERY</Link>
                 </NavItem>
             </Nav>
         </>
