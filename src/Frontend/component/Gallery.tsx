@@ -1,25 +1,13 @@
-import React from 'react';
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { Button, Card, CardBody, CardSubtitle, CardText, CardTitle, Col, Container, Row } from 'reactstrap';
 import vincentium_broken from '../img/vincentium_broken.jpg';
-
 
 class ImageData {
   constructor(public name: string, public src: string, public description: string) {}
 }
 
-let images: ImageData[] = [];
-
-// Sample data for the gallery
-// const images = [
-  // new ImageData("Foto 1", vincentium_broken, "Gnomo strano trovato in un bosco"),
-  // new ImageData("Foto 2", vincentium_broken, "Gnomo strano trovato in un bosco"),
-  // new ImageData("Foto 3", vincentium_broken, "Gnomo gay"),
-  // new ImageData("Foto 4", vincentium_broken, "Gnomo strano trovato in un bosco"),
-  // new ImageData("Foto 5", vincentium_broken, "Gnomo strano trovato in un bosco"),
-// ];
-
 function Gallery() {
+  const [images, setImages] = useState<ImageData[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,15 +17,14 @@ function Gallery() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        // Update your state with this data
-        images = data.map((nft: any) => new ImageData(nft.name, nft.image, nft.description));
+        const imageData = data.map((nft: any) => new ImageData(nft.name, nft.image, nft.description));
+        setImages(imageData); // Update the state with fetched data
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
     };
     fetchData();
   }, []);
-
 
   const renderCardsForRow = (imagesForRow: ImageData[]) => {
     return imagesForRow.map((image, index) => (
@@ -55,7 +42,6 @@ function Gallery() {
     ));
   };
 
-  // Function to render rows of images
   const renderImageRows = () => {
     const rows = [];
     for (let i = 0; i < images.length; i += 3) {
@@ -77,3 +63,8 @@ function Gallery() {
 }
 
 export default Gallery;
+
+
+
+
+
