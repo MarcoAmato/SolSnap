@@ -34,6 +34,8 @@ function Home() {
   };
 
   const uploadPhoto = async () => {
+    // TODO - Implement the upload photo functionality. Should pass img, name and description to the backend
+
     // Create a new File instance for testing
     const testFile = new File([vincentium_broken], vincentium_broken, { type: 'image/png' });
 
@@ -48,6 +50,7 @@ function Home() {
 
     const formData = new FormData(); // Collect the data to send to the server
     formData.append('picture', testFile);
+    formData.append('description', 'NFT Description');
     formData.append('name', 'NFT Name');
     try {
       // Delay the upload to simulate a real-world scenario
