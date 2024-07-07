@@ -47,6 +47,10 @@
   background-color: #2d5e6b;
 }
 
+.marginRight{
+  margin-right: 5px;
+}
+
 .text{
   color: white;
   text-decoration: none; 

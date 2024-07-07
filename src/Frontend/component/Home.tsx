@@ -2,15 +2,26 @@ import React, { useState, useEffect } from 'react';
 import '../css/Style.css';
 import { Button } from 'reactstrap';
 import vincentium_broken from '../img/vincentium_broken.jpg';
+import img1 from '../img/1.png';
+import smartphone from '../img/smartphone.png';
 import loading_spinner from '../img/loading-spinner.gif';
 import { IMAGE_FOLDER } from '../../constants';
 
 function Home() {
 
   const [loading, setLoading] = useState(false);
+  const [upload, setUploading] = useState(false);
+  const [uploadeffected, setuploadeffected] = useState(false);
+  const [uploaderror, setuploaderror] = useState(false);
   const [photo, setPhoto] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [message, setMessage] = useState('');
+
+
+
+  useEffect(() => {
+    setPhoto(smartphone);
+  }, []);
 
   // const uploadPhoto = () => {
   //   setLoading(true);
@@ -33,9 +44,17 @@ function Home() {
     }
   };
 
+  const takePhoto = () => {
+    setPhoto(img1);
+    setuploadeffected(false);
+  };
+
   const uploadPhoto = async () => {
+    setUploading(true);
+    setuploadeffected(false);
+    setuploaderror(false);
     // Create a new File instance for testing
-    const testFile = new File([vincentium_broken], vincentium_broken, { type: 'image/png' });
+    const testFile = new File([img1], img1, { type: 'image/png' });
 
     if (!testFile) {
       setMessage('No file selected');
@@ -44,7 +63,7 @@ function Home() {
     setLoading(true);
     setMessage('Uploading...');
     console.log('Uploading photo:', testFile.name);
-    setPhoto(vincentium_broken);
+    setPhoto(img1);
 
     const formData = new FormData(); // Collect the data to send to the server
     formData.append('picture', testFile);
@@ -61,7 +80,7 @@ function Home() {
         const data = await response.json();
         // log data in prettier format
         console.log(JSON.stringify(data, null, 2));
-        
+
         // log id
         console.log('NFT ID:', data.id);
         // log name
@@ -74,15 +93,25 @@ function Home() {
       }
     } catch (error) {
       setMessage('Upload failed with error');
+      setuploaderror(true);
     } finally {
       setLoading(false);
+      setuploadeffected(true);
     }
   };
 
   const deletePhoto = () => {
-    setPhoto('');
+    setPhoto(smartphone);
     setMessage('');
   };
+
+  const takeNewPhoto = () => {
+    setPhoto(smartphone);
+    setMessage('');
+    setUploading(false);
+    setuploaderror(false);
+  };
+
 
 
 
@@ -96,8 +125,17 @@ function Home() {
           <p>This is the homepage of the website</p>
 
           <div id="upload-photo">
+            <img src={photo} width="650" height="350" />
+            <br />
+            {photo == smartphone && (
+              <>
+                {/* Photo is located in img folder */}
+                {/*                 <img src={photo} alt="Uploaded photo" width="650" height="350" />
+                <br /> */}
+                <Button onClick={takePhoto}>Take a photo</Button>
+              </>
+            )}
 
-            <Button onClick={uploadPhoto}>Take a photo</Button>
 
             {loading && (
               <>
@@ -108,13 +146,44 @@ function Home() {
 
             {message && <p>{message}</p>}
 
-            {photo && (
+            {photo != smartphone && (
               <>
-              {/* Photo is located in img folder */}
-                <img src={photo} alt="Uploaded photo" width="200" height="200" />
-                <br />
+                {/* Photo is located in img folder */}
+                {/*                 <img src={photo} alt="Uploaded photo" width="650" height="350" />
+                <br /> */}
 
-                <Button onClick={deletePhoto}>Delete Photo</Button>
+
+
+                {!upload ? (
+                  <>
+                    <Button className='marginRight' onClick={uploadPhoto}>Upload photo</Button>
+                    <Button onClick={deletePhoto}>Delete Photo</Button>
+                  </>
+                ) : (
+                  <>
+                  </>
+                )}
+
+
+                {uploaderror ? (
+                  <>
+                    <Button className='marginRight' onClick={uploadPhoto}>Upload again</Button>
+                  </>
+                ) : (
+                  <>
+                  </>
+                )}
+
+                {uploadeffected ? (
+                  <>
+                    <Button onClick={takeNewPhoto}>Take a new Photo</Button>
+                  </>
+                ) : (
+                  <>
+                  </>
+                )}
+
+
               </>
             )}
 
