@@ -24,6 +24,14 @@
   color: white;
 }
 
+.App-gallery {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
 .App-link {
   color: #61dafb;
 }
@@ -88,6 +96,8 @@
   height: 350px;
   z-index: 0; /* Immagine sotto */
 }
+
+
 .image2[src=""] {
-  display: none; /* Nasconde le immagini con src vuoto */
+  display: none; 
 }

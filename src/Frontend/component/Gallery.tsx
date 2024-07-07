@@ -64,6 +64,7 @@ function Gallery() {
 
   return (
     <>
+    <div className="App-gallery">
     <Container>
       {renderImageRows()}
     </Container>
@@ -85,7 +86,7 @@ function Gallery() {
         </ModalFooter>
       </Modal>
  
-
+      </div>
     </>
   );
 }
