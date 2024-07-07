@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, CardBody, CardSubtitle, CardText, CardTitle, Col, Container, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import vincentium_broken from '../img/vincentium_broken.jpg';
+import { IMAGE_FOLDER } from '../../constants';
 
 class ImageData {
   constructor(public name: string, public src: string, public description: string) {}
@@ -21,7 +22,8 @@ function Gallery() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        const imageData = data.map((nft: any) => new ImageData(nft.name, nft.image, nft.description));
+        const imageData = data.map((nft: any) => new ImageData(nft.name, nft.src, nft.description));
+        console.log('Fetched data:', imageData);
         setImages(imageData); // Update the state with fetched data
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -34,7 +36,7 @@ function Gallery() {
     return imagesForRow.map((image, index) => (
       <Col sm={4} key={index}>
         <Card style={{ width: '18rem' }}>
-          <img alt={image.name} src={image.src} />
+          <img alt={image.name} src={`${IMAGE_FOLDER}${image.src}`} />
           <CardBody>
             <CardTitle tag="h5">{image.name}</CardTitle>
             <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>

@@ -55,20 +55,26 @@ function Home() {
     setuploadeffected(false);
     setuploaderror(false);
     // Create a new File instance for testing
-    const testFile = new File([photo], photo, { type: 'image/png' });
+    const image = new File([photo], photo, { type: 'image/png' });
 
-    if (!testFile) {
+    if (!image) {
       setMessage('No file selected');
       return;
     }
     setLoading(true);
     setMessage('Uploading...');
-    console.log('Uploading photo:', testFile.name);
+    console.log('Uploading photo:', image.name);
     setPhoto(photo);
 
     const formData = new FormData(); // Collect the data to send to the server
-    formData.append('picture', testFile);
+    formData.append('picture', image);
     formData.append('name', 'NFT Name');
+    formData.append('description', 'Pinga ponga');
+
+    // NFT Image URL: /img/10.png
+    // Remove the /img/ part of the URL
+    const src = photo.replace(IMAGE_FOLDER, '');
+    formData.append('src', src);
     try {
       // Delay the upload to simulate a real-world scenario
       await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -87,7 +93,7 @@ function Home() {
         // log name
         console.log('NFT Name:', data.name);
         // log img url in backend
-        console.log('NFT Image URL:', data.url);
+        console.log('NFT Image URL:', data.src);
         setMessage('Photo uploaded successfully!');
       } else {
         setMessage('Upload failed');
@@ -112,9 +118,6 @@ function Home() {
     setUploading(false);
     setuploaderror(false);
   };
-
-
-
 
   return (
     <>
