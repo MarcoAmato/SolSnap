@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/Style.css';
 import { Button } from 'reactstrap';
-import vincentium_broken from '../img/vincentium_broken.jpg';
-import img1 from '../img/1.png';
 import smartphone from '../img/smartphone.png';
 import loading_spinner from '../img/loading-spinner.gif';
 import { IMAGE_FOLDER } from '../../constants';
@@ -45,7 +43,10 @@ function Home() {
   };
 
   const takePhoto = () => {
-    setPhoto(img1);
+    const randomNumber = Math.floor(Math.random() * 10) + 1; // Generates a random number between 1 and 10
+    const newImage = `${IMAGE_FOLDER}${randomNumber}.png`;
+    console.log('New image:', newImage);
+    setPhoto(newImage);
     setuploadeffected(false);
   };
 
@@ -54,7 +55,7 @@ function Home() {
     setuploadeffected(false);
     setuploaderror(false);
     // Create a new File instance for testing
-    const testFile = new File([img1], img1, { type: 'image/png' });
+    const testFile = new File([photo], photo, { type: 'image/png' });
 
     if (!testFile) {
       setMessage('No file selected');
@@ -63,7 +64,7 @@ function Home() {
     setLoading(true);
     setMessage('Uploading...');
     console.log('Uploading photo:', testFile.name);
-    setPhoto(img1);
+    setPhoto(photo);
 
     const formData = new FormData(); // Collect the data to send to the server
     formData.append('picture', testFile);
