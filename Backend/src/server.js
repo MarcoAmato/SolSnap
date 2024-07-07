@@ -9,8 +9,8 @@ const uploadImage = require('./nftService');
 
 
 const app = express();
-const port = 3061;
-
+// const port = 3061;
+let serverInstance;
 let nfts = []; // This will store NFT data
 
 app.use(express.json()); // For parsing application/json
@@ -50,10 +50,13 @@ app.post('/create-nft', upload.single('picture'), (req, res) => {
   res.status(201).send(nftData);
 });
 
-// Export the app, a function to start the server, and the server instance
-module.exports.app = app;
-module.exports.start = (port) => {
-  if (!module.parent) { // Prevent server from auto-starting when imported
-    return app.listen(port, () => console.log(`Server listening on port ${port}`));
+// Start the server and ensure it's a singleton
+function startServer(port) {
+  if (!serverInstance) {
+    serverInstance = app.listen(port, () => console.log(`Server listening on port ${port}`));
   }
-};
+  return serverInstance;
+}
+
+// Export the app, a function to start the server, and the server instance
+module.exports = { app, startServer, getServerInstance: () => serverInstance };
