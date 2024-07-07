@@ -65,3 +65,29 @@
   color: white;
   text-decoration: none; 
 }
+
+
+.containerPhoto {
+  position: relative;
+  width: 650px;
+  height: 350px;
+}
+.image1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 650px;
+  height: 350px;
+  z-index: 1; /* Immagine sopra */
+}
+.image2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 650px;
+  height: 350px;
+  z-index: 0; /* Immagine sotto */
+}
+.image2[src=""] {
+  display: none; /* Nasconde le immagini con src vuoto */
+}
