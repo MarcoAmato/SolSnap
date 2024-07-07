@@ -7,6 +7,7 @@ import {
   publicKey,
   createSignerFromKeypair,
   signerIdentity,
+  createGenericFile,
   generateSigner,
   percentAmount,
   Umi,
@@ -22,7 +23,7 @@ import fs from "fs";
 const umi: Umi = getUmiInstance();
 
 function getUmiInstance(): Umi {
-  const umi: Umi = createUmi("https://api.devnet.solana.com");
+  const umi: Umi = createUmi("https://api.devnet.solana.com", "finalized");
   umi.use(irysUploader());
 
   const photographerPK: Uint8Array = new Uint8Array(
@@ -68,11 +69,13 @@ async function createNFT(metadata: any, image: Buffer): Promise<{ success: boole
  */
 async function uploadImage(image: Buffer, name: string, description: string): Promise<string> {
   try {
-    const uri: string = await umi.uploader.uploadJson({
-      name: name,
-      description: description,
-      image: image.toString('base64'),
-    });
+    const nftImage = createGenericFile(image, name);
+    const [uri] = await umi.uploader.upload([nftImage]);
+    // const uri: string = await umi.uploader.uploadJson({
+    //   name: name,
+    //   description: description,
+    //   image: image.toString('base64'),
+    // });
     return uri;
   } catch (error) {
     console.error("Error uploading image:", error);

@@ -38,24 +38,22 @@ app.post('/create-nft', upload.single('picture'), (req, res) => {
     url: null, // This will be filled after the image is uploaded to UMI
   };
 
-  console.log(nftData);
-  console.log(nftData.url);
+  // console.log(nftData);
+  // console.log(nftData.url);
   
   // Upload the image to UMI
   const umiUri = uploadImage(req.file.path, req.body.name, req.body.description);
-  console.log(umiUri);
+  // console.log(umiUri);
   nftData.url = umiUri;
 
   nfts.push(nftData);
   res.status(201).send(nftData);
 });
 
-const server = app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
-
-// Export the app and a function to start the server
-module.exports.app = server;
+// Export the app, a function to start the server, and the server instance
+module.exports.app = app;
 module.exports.start = (port) => {
-  return app.listen(port, () => console.log(`Server listening on port ${port}`));
+  if (!module.parent) { // Prevent server from auto-starting when imported
+    return app.listen(port, () => console.log(`Server listening on port ${port}`));
+  }
 };
