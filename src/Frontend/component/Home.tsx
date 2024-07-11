@@ -11,6 +11,8 @@ function Home() {
   const [upload, setUploading] = useState(false);
   const [uploadeffected, setuploadeffected] = useState(false);
   const [uploaderror, setuploaderror] = useState(false);
+  const [photostart, setPhotoStart] = useState('');
+  const [photostartboolean, setPhotoStartBoolean] = useState(true);
   const [photo, setPhoto] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [message, setMessage] = useState('');
@@ -18,7 +20,7 @@ function Home() {
 
 
   useEffect(() => {
-    setPhoto(smartphone);
+    setPhotoStart(smartphone);
   }, []);
 
   // const uploadPhoto = () => {
@@ -48,6 +50,7 @@ function Home() {
     console.log('New image:', newImage);
     setPhoto(newImage);
     setuploadeffected(false);
+    setPhotoStartBoolean(false);
   };
 
   const uploadPhoto = async () => {
@@ -65,6 +68,7 @@ function Home() {
     setMessage('Uploading...');
     console.log('Uploading photo:', image.name);
     setPhoto(photo);
+    setPhotoStartBoolean(false);
 
     const formData = new FormData(); // Collect the data to send to the server
     formData.append('picture', image);
@@ -108,12 +112,14 @@ function Home() {
   };
 
   const deletePhoto = () => {
-    setPhoto(smartphone);
+    setPhoto('');
     setMessage('');
+    setPhotoStartBoolean(true);
   };
 
   const takeNewPhoto = () => {
-    setPhoto(smartphone);
+    setPhoto('');
+    setPhotoStartBoolean(true);
     setMessage('');
     setUploading(false);
     setuploaderror(false);
@@ -125,13 +131,17 @@ function Home() {
       <div className="App">
         <header className="App-header">
 
-          <h1>Create your NFT Photo NFT an a Snap</h1>
-          <p>This is the homepage of the website</p>
+          <h1>Create your NFT Photo</h1>
+          <p>Solsnap</p>
 
           <div id="upload-photo">
-            <img src={photo} width="650" height="350" />
+
+            <div className="containerPhoto">
+              <img src={photostart} className="image1" />
+              <img src={photo} className="image2" />
+            </div>
             <br />
-            {photo == smartphone && (
+            {photostartboolean && (
               <>
                 {/* Photo is located in img folder */}
                 {/*                 <img src={photo} alt="Uploaded photo" width="650" height="350" />
@@ -150,7 +160,7 @@ function Home() {
 
             {message && <p>{message}</p>}
 
-            {photo != smartphone && (
+            {!photostartboolean && (
               <>
                 {/* Photo is located in img folder */}
                 {/*                 <img src={photo} alt="Uploaded photo" width="650" height="350" />
