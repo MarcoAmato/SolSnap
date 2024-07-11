@@ -29,12 +29,9 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest"
-    },
-    "globals": {
-      "ts-jest": {
+      "^.+\\.tsx?$": ["ts-jest", {
         "tsconfig": "tsconfig.json"
-      }
+      }]
     }
   }
 }

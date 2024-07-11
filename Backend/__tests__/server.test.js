@@ -1,10 +1,20 @@
 const request = require('supertest');
 const path = require('path');
-const { app, startServer } = require('../src/server.js');
+const { app, start } = require('../src/server.js');
 
-beforeAll(() => {
+let server;
+
+beforeAll((done) => {
   // Start the server before all tests
-  startServer(3061); // Use your desired test port
+  server = start(3061); // Use your desired test port
+  done();
+});
+
+afterAll((done) => {
+  // Close the server after all tests
+  if(server){
+    server.close(done);
+  }
 });
 
 // Test the server is running
@@ -45,6 +55,6 @@ describe('POST /create-nft', () => {
     expect(response.body).toHaveProperty('id');
     expect(response.body.name).toBe(nftData.name);
     expect(response.body.description).toBe(nftData.description);
-    expect(response.body).toHaveProperty('picture'); // Check if picture path is returned
+    expect(response.body).toHaveProperty('src'); // Check if picture path is returned
   });
 });

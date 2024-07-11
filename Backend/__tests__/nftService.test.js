@@ -67,7 +67,6 @@ describe('uploadImage', () => {
 
       console.log('UploadImage result:', result);
       
-
       // Assert
       expect(result).toBeDefined();
 
