@@ -1,5 +1,5 @@
 // Import statements
-const { uploadImage } = require('../src/nftService');
+const { uploadImage, createNFT } = require('../src/nftService');
 const umi = require('@metaplex-foundation/umi-bundle-defaults');
 const { assert } = require('console');
 const { readFile } = require('fs/promises');
@@ -72,8 +72,52 @@ describe('uploadImage', () => {
 
     } catch (error) {
       // Catch
-      console.error(error);
+      fail(error);
     }
-  }, 50000); // Increase timeout to 10 seconds. Sometimes the network request to Umi can take longer
+  }, 10000); // Increase timeout to 10 seconds. Sometimes the network request to Umi can take longer
   // than the default 5 seconds
+});
+
+/**
+ * Test suite for createNFT
+ * 
+ * The createNFT function should create an NFT with given metadata and image, then return an object with success status, message, and NFT URI.
+ */
+describe('createNFT', () => {
+  it('should create an NFT and return a success message with a valid URI', async () => {
+    console.log('Running test for createNFT');
+
+    const mockMetadata = {
+      name: 'TestNFT',
+      symbol: 'TNFT',
+      description: 'A test NFT'
+    };
+
+    var mockImage = null;
+    // Setup
+    // Read test image file
+    try {
+      mockImage = await readFile('./__tests__/test-picture.jpg');
+    } catch (error) {
+      console.error("Error reading test image file:", error);
+    }
+    assert(mockImage != null, "Test image file must not be null");
+
+    try {
+      // Act
+      console.log('Calling createNFT...');
+      const result = await createNFT(mockMetadata, mockImage);
+
+      console.log('createNFT result:', result);
+      
+      // Assert
+      expect(result.success).toBeTruthy();
+      expect(result.message).toBe("NFT created successfully");
+      // Use a regex to match a valid URL format
+      expect(result.nftUri).toMatch(/^(https?):\/\/[^\s$.?#].[^\s]*$/);
+    } catch (error) {
+      // Catch
+      fail(error);
+    }
+  }, 10000); // Increase timeout to accommodate potential delays in NFT creation
 });

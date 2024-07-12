@@ -43,21 +43,56 @@ function getUmiInstance(): Umi {
   return umi;
 }
 
-async function createNFT(metadata: any, image: Buffer): Promise<{ success: boolean; message: string }> {
-  const uri: string = await uploadImage(image, metadata.name, metadata.description);
+async function createNFT(metadata: any, image: Buffer): Promise<{ success: boolean; message: string; nftUri: string }> {
+  // Uri will be populated with the URI of the uploaded image
+  var uri: string;
+  // nftUri will be populated with the URI of the created NFT
+  var nftUri: string;
 
-  const connection: solanaWeb3.Connection = new solanaWeb3.Connection(
-    solanaWeb3.clusterApiUrl("devnet")
-  );
+  // Upload the image to UMI
+  try{
+    uri = await uploadImage(image, metadata.name, metadata.description);
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    return { success: false, message: "Error uploading image", nftUri: ""};
+  }
 
-  // Logic to create and send NFT creation transaction
-  // This is a placeholder. Actual implementation will depend on your NFT structure and Solana's requirements
-
-  return {
-    success: true,
-    message: "NFT created successfully",
-    // Include any other relevant data here
+  // Create the NFT metadata
+  const uploadData = {
+    name: metadata.name,
+    symbol: metadata.symbol,
+    description: metadata.description,
+    image: uri,
+    attributes: [
+        {
+            trait_type: "Rarity",
+            value: "Common"
+        },
+        {
+            trait_type: "Author",
+            value: "SolSnap"
+        }
+    ],
+    proprieties: {
+        files: [
+            {
+                type: "image/jpeg",
+                uri: uri
+            }
+        ]
+    }
   };
+
+  // Upload the metadata to UMI and create the NFT
+  try{
+    nftUri = await umi.uploader.uploadJson(uploadData);
+    console.log("Your Uri:", nftUri);
+  } catch (error) {
+    console.error("Error uploading metadata:", error);
+    return { success: false, message: "Error uploading metadata", nftUri: ""};
+  }
+
+  return { success: true, message: "NFT created successfully", nftUri: nftUri};
 }
 
 /**
