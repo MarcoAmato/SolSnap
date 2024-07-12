@@ -1,33 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import '../css/Style.css';
 import { Button } from 'reactstrap';
-import vincentium_broken from '../img/vincentium_broken.jpg';
+import smartphone from '../img/smartphone.png';
 import loading_spinner from '../img/loading-spinner.gif';
 import { IMAGE_FOLDER } from '../../constants';
 
 function Home() {
 
   const [loading, setLoading] = useState(false);
+  const [upload, setUploading] = useState(false);
+  const [uploadeffected, setuploadeffected] = useState(false);
+  const [uploaderror, setuploaderror] = useState(false);
+  const [photostart, setPhotoStart] = useState('');
+  const [photostartboolean, setPhotoStartBoolean] = useState(true);
   const [photo, setPhoto] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [message, setMessage] = useState('');
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      setSelectedFile(file); // This should now be correctly typed
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhoto(reader.result as string); // Convert selected file into data URL
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setSelectedFile(null); // Ensure you can also reset to null if needed
-      setPhoto(null); // Reset photo when no file is selected
-    }
+
+
+  useEffect(() => {
+    setPhotoStart(smartphone);
+  }, []);
+
+  // const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files && event.target.files.length > 0) {
+  //     const file = event.target.files[0];
+  //     setSelectedFile(file); // This should now be correctly typed
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setPhoto(reader.result as string); // Convert selected file into data URL
+  //     };
+  //     reader.readAsDataURL(file);
+  //   } else {
+  //     setSelectedFile(null); // Ensure you can also reset to null if needed
+  //     setPhoto(null); // Reset photo when no file is selected
+  //   }
+  // };
+
+  const takePhoto = () => {
+    const randomNumber = Math.floor(Math.random() * 10) + 1; // Generates a random number between 1 and 10
+    const newImage = `${IMAGE_FOLDER}${randomNumber}.png`;
+    console.log('New image:', newImage);
+    setPhoto(newImage);
+    setuploadeffected(false);
+    setPhotoStartBoolean(false);
   };
 
   const uploadPhoto = async (
+    image: File,
     name: string,
     description: string,
     symbol: string
@@ -36,10 +57,28 @@ function Home() {
       setMessage('No file selected');
       return;
     }
+    
+    setUploading(true);
+    setuploadeffected(false);
+    setuploaderror(false);
     setLoading(true);
     setMessage('Uploading...');
     console.log('Uploading photo:', name);
 
+    setPhoto(photo);
+    setPhotoStartBoolean(false);
+
+    const formData = new FormData(); // Collect the data to send to the server
+    formData.append('picture', image);
+    formData.append('name', 'NFT Name');
+    formData.append('description', 'Pinga ponga');
+
+    // NFT Image URL: /img/10.png
+    // Remove the /img/ part of the URL
+    // const src = photo.replace(IMAGE_FOLDER, '');
+    // formData.append('src', src);
+
+    
     const mockMetadata = {
       name: name,
       symbol: symbol,
@@ -47,6 +86,7 @@ function Home() {
     };
 
     try {
+
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/create-nft`, {
         method: 'POST',
         body: JSON.stringify(mockMetadata),
@@ -63,17 +103,26 @@ function Home() {
       }
     } catch (error) {
       setMessage('Upload failed with error');
+      setuploaderror(true);
     } finally {
       setLoading(false);
+      setuploadeffected(true);
     }
   };
 
   const deletePhoto = () => {
     setPhoto('');
     setMessage('');
+    setPhotoStartBoolean(true);
   };
 
-
+  const takeNewPhoto = () => {
+    setPhoto('');
+    setPhotoStartBoolean(true);
+    setMessage('');
+    setUploading(false);
+    setuploaderror(false);
+  };
 
   return (
     <>
@@ -81,12 +130,24 @@ function Home() {
       <div className="App">
         <header className="App-header">
 
-          <h1>Create your NFT Photo NFT an a Snap</h1>
-          <p>This is the homepage of the website</p>
+          <h1>Create your NFT Photo</h1>
+          <p>Solsnap</p>
 
           <div id="upload-photo">
 
-            <Button onClick={uploadPhoto}>Take a photo</Button>
+            <div className="containerPhoto">
+              <img src={photostart} className="image1" />
+            </div>
+            <br />
+            {photostartboolean && (
+              <>
+                {/* Photo is located in img folder */}
+                {/*                 <img src={photo} alt="Uploaded photo" width="650" height="350" />
+                <br /> */}
+                <Button onClick={takePhoto}>Take a photo</Button>
+              </>
+            )}
+
 
             {loading && (
               <>
@@ -97,13 +158,45 @@ function Home() {
 
             {message && <p>{message}</p>}
 
-            {photo && (
+            {!photostartboolean && (
               <>
-              {/* Photo is located in img folder */}
-                <img src={photo} alt="Uploaded photo" width="200" height="200" />
-                <br />
+                {/* Photo is located in img folder */}
+                {/*                 <img src={photo} alt="Uploaded photo" width="650" height="350" />
+                <br /> */}
 
-                <Button onClick={deletePhoto}>Delete Photo</Button>
+
+
+                {!upload ? (
+                  <>
+                    {/* <Button className='marginRight' onClick={uploadPhoto}>Upload photo</Button> */}
+                    <Button className='marginRight' onClick={() => selectedFile && uploadPhoto(selectedFile, 'NFT Name', 'Pinga ponga', 'NFT')}>Upload photo</Button>
+                    <Button onClick={deletePhoto}>Delete Photo</Button>
+                  </>
+                ) : (
+                  <>
+                  </>
+                )}
+
+
+                {uploaderror ? (
+                  <>
+                    <Button className='marginRight' onClick={() => selectedFile && uploadPhoto(selectedFile, 'NFT Name', 'Pinga ponga', 'NFT')}>Upload again</Button>
+                  </>
+                ) : (
+                  <>
+                  </>
+                )}
+
+                {uploadeffected ? (
+                  <>
+                    <Button onClick={takeNewPhoto}>Take a new Photo</Button>
+                  </>
+                ) : (
+                  <>
+                  </>
+                )}
+
+
               </>
             )}
 

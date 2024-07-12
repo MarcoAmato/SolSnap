@@ -1,17 +1,17 @@
 // src/server.js
 
-const express = require('express');
-const multer = require('multer');
+import express, { json } from 'express';
+import multer from 'multer';
 const upload = multer({ dest: 'uploads/' });
-const cors = require('cors');
+import cors from 'cors';
 const app = express();
 
-const { createNFT } = require('./nftService');
+import { createNFT } from './nftService';
 
 const port = 3061;
 let nfts = []; // This will store NFT data
 
-app.use(express.json()); // For parsing application/json
+app.use(json()); // For parsing application/json
 app.use(cors()); // Enable CORS
 
 // GET
@@ -56,7 +56,8 @@ app.post('/create-nft', upload.single('picture'), async (req, res) => {
 });
 
 // Export the app and a function to start the server
-module.exports.app = app;
-module.exports.start = (port) => {
+const _app = app;
+export { _app as app };
+export function start(port) {
   return app.listen(port, () => console.log(`Server listening on port ${port}`));
-};
+}
