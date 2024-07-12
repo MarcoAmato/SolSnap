@@ -8,69 +8,55 @@ import { IMAGE_FOLDER } from '../../constants';
 function Home() {
 
   const [loading, setLoading] = useState(false);
-  const [photo, setPhoto] = useState('');
+  const [photo, setPhoto] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [message, setMessage] = useState('');
-
-  // const uploadPhoto = () => {
-  //   setLoading(true);
-  //   setMessage('Shot in progress...');
-  //   setPhoto('');
-
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //     setPhoto(vincentium_broken);
-  //     setMessage('Photo taken correctly!');
-  //   }, 3000); // 3000 milliseconds = 3 seconds
-  // };
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       setSelectedFile(file); // This should now be correctly typed
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhoto(reader.result as string); // Convert selected file into data URL
+      };
+      reader.readAsDataURL(file);
     } else {
       setSelectedFile(null); // Ensure you can also reset to null if needed
+      setPhoto(null); // Reset photo when no file is selected
     }
   };
 
-  const uploadPhoto = async () => {
-    // TODO - Implement the upload photo functionality. Should pass img, name and description to the backend
-
-    // Create a new File instance for testing
-    const testFile = new File([vincentium_broken], vincentium_broken, { type: 'image/png' });
-
-    if (!testFile) {
+  const uploadPhoto = async (
+    name: string,
+    description: string,
+    symbol: string
+  ) => {
+    if (!selectedFile) {
       setMessage('No file selected');
       return;
     }
     setLoading(true);
     setMessage('Uploading...');
-    console.log('Uploading photo:', testFile.name);
-    setPhoto(vincentium_broken);
+    console.log('Uploading photo:', name);
 
-    const formData = new FormData(); // Collect the data to send to the server
-    formData.append('picture', testFile);
-    formData.append('description', 'NFT Description');
-    formData.append('name', 'NFT Name');
+    const mockMetadata = {
+      name: name,
+      symbol: symbol,
+      description: description
+    };
+
     try {
-      // Delay the upload to simulate a real-world scenario
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/create-nft`, {
         method: 'POST',
-        body: formData,
+        body: JSON.stringify(mockMetadata),
       });
+
       if (response.ok) {
-        const data = await response.json();
+        const result = await response.json();
         // log data in prettier format
-        console.log(JSON.stringify(data, null, 2));
+        console.log(JSON.stringify(result, null, 2));
         
-        // log id
-        console.log('NFT ID:', data.id);
-        // log name
-        console.log('NFT Name:', data.name);
-        // log img url in backend
-        console.log('NFT Image URL:', data.url);
         setMessage('Photo uploaded successfully!');
       } else {
         setMessage('Upload failed');

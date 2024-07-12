@@ -6,7 +6,7 @@ const upload = multer({ dest: 'uploads/' });
 const cors = require('cors');
 const app = express();
 
-const { uploadImage } = require('./nftService');
+const { createNFT } = require('./nftService');
 
 const port = 3061;
 let nfts = []; // This will store NFT data
@@ -26,21 +26,33 @@ app.get('/nfts', (req, res) => {
 });
 
 // Endpoint to create an NFT
-app.post('/create-nft', upload.single('picture'), (req, res) => {
-  const nftData = {
-    id: nfts.length + 1,
+app.post('/create-nft', upload.single('picture'), async (req, res) => {
+  const imageBuffer = fs.readFileSync(req.file.path);
+  const metadata = {
     name: req.body.name,
     description: req.body.description,
-    //TODO Fix url so that frontend can access it
-    src: req.file.path,
+    symbol: req.body.symbol,
   };
 
-  // Upload the image to UMI
-  const umiUri = uploadImage(req.file.path, req.body.name, req.body.description);
-  // console.log(umiUri);
-  nftData.url = umiUri;
-  nfts.push(nftData);
-  res.status(201).send(nftData);
+  try {
+    const { success, message, nftUri } = await createNFT(metadata, imageBuffer);
+    if (success) {
+      const nftData = {
+        id: nfts.length + 1,
+        name: metadata.name,
+        description: metadata.description,
+        symbol: metadata.symbol,
+        url: nftUri,
+      };
+      nfts.push(nftData);
+      res.status(201).send(nftData);
+    } else {
+      res.status(500).json({ error: message });
+    }
+  } catch (error) {
+    console.error("Failed to create NFT:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 // Export the app and a function to start the server
