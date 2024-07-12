@@ -23,26 +23,13 @@ function Home() {
     setPhotoStart(smartphone);
   }, []);
 
-  // const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (event.target.files && event.target.files.length > 0) {
-  //     const file = event.target.files[0];
-  //     setSelectedFile(file); // This should now be correctly typed
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setPhoto(reader.result as string); // Convert selected file into data URL
-  //     };
-  //     reader.readAsDataURL(file);
-  //   } else {
-  //     setSelectedFile(null); // Ensure you can also reset to null if needed
-  //     setPhoto(null); // Reset photo when no file is selected
-  //   }
-  // };
-
   const takePhoto = () => {
     const randomNumber = Math.floor(Math.random() * 10) + 1; // Generates a random number between 1 and 10
     const newImage = `${IMAGE_FOLDER}${randomNumber}.png`;
     console.log('New image:', newImage);
     setPhoto(newImage);
+    // set selected file to current image
+    setSelectedFile(new File([new Blob()], newImage));
     setuploadeffected(false);
     setPhotoStartBoolean(false);
   };
@@ -72,33 +59,22 @@ function Home() {
     formData.append('picture', image);
     formData.append('name', 'NFT Name');
     formData.append('description', 'Pinga ponga');
-
-    // NFT Image URL: /img/10.png
-    // Remove the /img/ part of the URL
-    // const src = photo.replace(IMAGE_FOLDER, '');
-    // formData.append('src', src);
-
-    
-    const mockMetadata = {
-      name: name,
-      symbol: symbol,
-      description: description
-    };
+    formData.append('symbol', symbol);
 
     try {
 
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/create-nft`, {
         method: 'POST',
-        body: JSON.stringify(mockMetadata),
+        body: formData,
       });
 
       if (response.ok) {
         const result = await response.json();
-        // log data in prettier format
         console.log(JSON.stringify(result, null, 2));
         
         setMessage('Photo uploaded successfully!');
       } else {
+        console.error('Failed to upload photo:', response);
         setMessage('Upload failed');
       }
     } catch (error) {
@@ -137,6 +113,7 @@ function Home() {
 
             <div className="containerPhoto">
               <img src={photostart} className="image1" />
+              <img src={photo ?? ''} className="image2" />
             </div>
             <br />
             {photostartboolean && (
