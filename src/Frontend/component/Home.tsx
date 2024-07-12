@@ -57,8 +57,8 @@ function Home() {
 
     const formData = new FormData(); // Collect the data to send to the server
     formData.append('picture', image);
-    formData.append('name', 'NFT Name');
-    formData.append('description', 'Pinga ponga');
+    formData.append('name', name);
+    formData.append('description', description);
     formData.append('symbol', symbol);
 
     try {
