@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, CardBody, CardSubtitle, CardText, CardTitle, Col, Container, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 
 class ImageData {
-  constructor(public name: string, public src: string, public description: string) {}
+  constructor(public name: string, public src: string, public description: string) { }
 }
 
 function Gallery() {
@@ -37,7 +37,7 @@ function Gallery() {
       }
       const jsonData = await initialResponse.json();
       const imageUrl = jsonData.image; // Assuming the key for the image URL is "image"
-  
+
       // Second fetch to get the binary data from the image URL
       const imageResponse = await fetch(imageUrl);
       if (!imageResponse.ok) {
@@ -63,9 +63,27 @@ function Gallery() {
           {imageUri ? <img src={imageUri} alt="Fetched content" /> : <p>Loading...</p>}
           <CardBody>
             <CardTitle tag="h5">{image.name}</CardTitle>
-            <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
-            <CardText>{image.description}</CardText>
+{/*             <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
+            <CardText>{image.description}</CardText> */}
             <Button onClick={toggle}>Visualizza</Button>
+
+            <Modal isOpen={modal} toggle={toggle}>
+              <ModalHeader>{image.name}</ModalHeader>
+              <ModalBody >
+                {imageUri ? <img style={{ width: '30rem' }} src={imageUri} alt="Fetched content" /> : <p>Loading...</p>}
+                <><br/></>
+                {image.description}
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" onClick={toggle}>
+                  Elimina
+                </Button>
+                <Button color="secondary" onClick={toggle}>
+                  Chiudi
+                </Button>
+              </ModalFooter>
+            </Modal>
+
           </CardBody>
         </Card>
       </Col>
@@ -97,17 +115,6 @@ function Gallery() {
         <Container>
           {renderImageRows()}
         </Container>
-        <Modal isOpen={modal} toggle={toggle}>
-          <ModalHeader toggle={toggle}>Modal title</ModalHeader>
-          <ModalBody>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={toggle}>
-              Chiudi
-            </Button>
-          </ModalFooter>
-        </Modal>
       </div>
     </>
   );
