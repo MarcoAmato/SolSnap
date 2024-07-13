@@ -69,6 +69,18 @@ app.post('/create-nft', upload.single('picture'), async (req: Request, res: Resp
     }
 });
 
+// Delete NFT by ID
+app.delete('/nfts/:id', (req: Request, res: Response) => {
+    const id: number = parseInt(req.params.id);
+    const index: number = nfts.findIndex(nft => nft.id === id);
+    if (index === -1) {
+        res.status(404).send('NFT not found');
+    } else {
+        nfts.splice(index, 1);
+        res.status(204).send();
+    }
+});
+
 // Export the app and a function to start the server
 export { app };
 export function start(port: number): void {

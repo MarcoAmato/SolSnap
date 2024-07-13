@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, CardBody, CardSubtitle, CardText, CardTitle, Col, Container, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 
 class ImageData {
-  constructor(public name: string, public src: string, public description: string) { }
+  constructor(
+    public id: number,
+    public name: string, 
+    public src: string, 
+    public description: string
+  ) { }
 }
 
 function Gallery() {
@@ -18,7 +23,7 @@ function Gallery() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        const imageData = data.map((nft: any) => new ImageData(nft.name, nft.url, nft.description));
+        const imageData = data.map((nft: any) => new ImageData(nft.id, nft.name, nft.url, nft.description));
         console.log('Fetched data:', imageData);
         setImages(imageData); // Update the state with fetched data
       } catch (error) {
@@ -52,6 +57,23 @@ function Gallery() {
     }
   };
 
+  // Function to delete an NFT by its ID
+  const deleteNFT = async (id: number) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/nfts/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      // Remove the deleted NFT from the local state to update the UI accordingly
+      setImages(images.filter(image => image.id !== id));
+      console.log(`NFT with id ${id} deleted successfully.`);
+    } catch (error) {
+      console.error("Failed to delete NFT:", error);
+    }
+  };
+
   const ImageCard = ({ image }: { image: ImageData }) => {
     const [imageUri, setImageUri] = useState('');
     useEffect(() => {
@@ -75,7 +97,10 @@ function Gallery() {
                 {image.description}
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" onClick={toggle}>
+                <Button color="danger" onClick={() => {
+                  deleteNFT(image.id);
+                  toggle();
+                }}>
                   Elimina
                 </Button>
                 <Button color="secondary" onClick={toggle}>
