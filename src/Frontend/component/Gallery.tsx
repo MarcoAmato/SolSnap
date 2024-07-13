@@ -5,8 +5,9 @@ class ImageData {
   constructor(
     public id: number,
     public name: string, 
-    public src: string, 
-    public description: string
+    public description: string,
+    public symbol: string,
+    public src: string
   ) { }
 }
 
@@ -23,7 +24,7 @@ function Gallery() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        const imageData = data.map((nft: any) => new ImageData(nft.id, nft.name, nft.url, nft.description));
+        const imageData = data.map((nft: any) => new ImageData(nft.id, nft.name, nft.description, nft.symbol, nft.url));
         console.log('Fetched data:', imageData);
         setImages(imageData); // Update the state with fetched data
       } catch (error) {
@@ -95,6 +96,7 @@ function Gallery() {
                 {imageUri ? <img style={{ width: '30rem' }} src={imageUri} alt="Fetched content" /> : <p>Loading...</p>}
                 <><br/></>
                 {image.description}
+                <p><strong>Symbol:</strong> {image.symbol}</p>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" onClick={() => {
