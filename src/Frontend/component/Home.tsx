@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/Style.css';
-import { Button } from 'reactstrap';
+import { Button, Form, FormGroup, Input } from 'reactstrap';
 import smartphone from '../img/smartphone.png';
 import loading_spinner from '../img/loading-spinner.gif';
 import { IMAGE_FOLDER } from '../../constants';
@@ -31,13 +31,13 @@ function Home() {
     setPhoto(newImage);
     // Assuming newImage is a path string, create a File object for it
     fetch(newImage)
-    .then(res => res.blob())
-    .then(blob => {
-      const file = new File([blob], `photo${randomNumber}.png`, { type: 'image/png' });
-      console.log(`New image file: ${file}. Size = ${file.size}`);
-      setSelectedFile(file);
-    })
-    .catch(error => console.error('Error fetching image:', error));
+      .then(res => res.blob())
+      .then(blob => {
+        const file = new File([blob], `photo${randomNumber}.png`, { type: 'image/png' });
+        console.log(`New image file: ${file}. Size = ${file.size}`);
+        setSelectedFile(file);
+      })
+      .catch(error => console.error('Error fetching image:', error));
     setuploadeffected(false);
     setPhotoStartBoolean(false);
   };
@@ -49,11 +49,11 @@ function Home() {
     symbol: string
   ) => {
     // if image size is 0, return
-    if(image.size === 0) {
+    if (image.size === 0) {
       setMessage('No file selected');
       return;
     }
-    
+
     setUploading(true);
     setuploadeffected(false);
     setuploaderror(false);
@@ -80,7 +80,7 @@ function Home() {
       if (response.ok) {
         const result = await response.json();
         console.log(JSON.stringify(result, null, 2));
-        
+
         setMessage('Photo uploaded successfully!');
       } else {
         console.error('Failed to upload photo:', response);
@@ -155,7 +155,42 @@ function Home() {
                 {!upload ? (
                   <>
                     {/* <Button className='marginRight' onClick={uploadPhoto}>Upload photo</Button> */}
-                    <Button className='marginRight' onClick={() => selectedFile && uploadPhoto(selectedFile, 'NFT Name', 'Pinga ponga', 'NFT')}>Upload photo</Button>
+
+                    
+                    <Form>
+
+                      <FormGroup>
+                        <Input
+                          id="name"
+                          name="name"
+                          type="text"
+                          placeholder="Inserisci titolo"
+                        />
+                      </FormGroup>
+
+                      <FormGroup>
+                        <Input
+                          id="symbol"
+                          name="symbol"
+                          placeholder="Inserisci simbolo"
+                          type="text"
+                        />
+                      </FormGroup>
+
+                      <FormGroup>
+                        <Input
+                          id="description"
+                          name="description"
+                          type="textarea"
+                          placeholder="Inserisci descrizione"
+                        />
+                      </FormGroup>
+
+                      <FormGroup>
+                      <Button onClick={() => selectedFile && uploadPhoto(selectedFile, 'NFT Name', 'Pinga ponga', 'NFT')}>Upload photo</Button>
+                      </FormGroup>
+                    </Form>
+                 
                     <Button onClick={deletePhoto}>Delete Photo</Button>
                   </>
                 ) : (
