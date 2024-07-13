@@ -36,10 +36,11 @@ function Home() {
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
-    
-    // Esegui qui la logica per gestire il submit del form
-    // Ad esempio, puoi validare i dati qui prima di inviarli al server
-    console.log(formData); // Esempio di cosa fare con i dati del form
+    if (selectedFile) {
+      uploadPhoto(selectedFile, formData.name, formData.description, formData.symbol);
+    } else {
+      console.error('No file selected');
+    }
   };
   //
 
