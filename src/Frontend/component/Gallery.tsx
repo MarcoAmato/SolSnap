@@ -45,12 +45,7 @@ function Gallery() {
       }
       const blob = await imageResponse.blob(); // Convert the response to a Blob
       console.log(`Blob type: ${blob.type}, size: ${blob.size}`); // Inspect Blob type and size
-      if (blob.type.startsWith('image/')) { // Check if the Blob is an image
-        return URL.createObjectURL(blob); // Create a URL for the Blob
-      } else {
-        console.error(`The fetched file at ${imageUrl} is not an image`);
-        return ''; // Return a default or error image URI
-      }
+      return URL.createObjectURL(blob); // Create a URL for the Blob
     } catch (error) {
       console.error("Failed to fetch image URI", error);
       return ''; // Return a default or error image URI

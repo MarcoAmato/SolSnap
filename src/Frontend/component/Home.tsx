@@ -26,10 +26,18 @@ function Home() {
   const takePhoto = () => {
     const randomNumber = Math.floor(Math.random() * 10) + 1; // Generates a random number between 1 and 10
     const newImage = `${IMAGE_FOLDER}${randomNumber}.png`;
-    console.log('New image:', newImage);
+    console.log(`New image: ${newImage}`);
+
     setPhoto(newImage);
-    // set selected file to current image
-    setSelectedFile(new File([new Blob()], newImage));
+    // Assuming newImage is a path string, create a File object for it
+    fetch(newImage)
+    .then(res => res.blob())
+    .then(blob => {
+      const file = new File([blob], `photo${randomNumber}.png`, { type: 'image/png' });
+      console.log(`New image file: ${file}. Size = ${file.size}`);
+      setSelectedFile(file);
+    })
+    .catch(error => console.error('Error fetching image:', error));
     setuploadeffected(false);
     setPhotoStartBoolean(false);
   };
@@ -40,7 +48,8 @@ function Home() {
     description: string,
     symbol: string
   ) => {
-    if (!selectedFile) {
+    // if image size is 0, return
+    if(image.size === 0) {
       setMessage('No file selected');
       return;
     }
