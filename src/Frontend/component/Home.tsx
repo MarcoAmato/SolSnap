@@ -18,6 +18,30 @@ function Home() {
   const [message, setMessage] = useState('');
 
 
+  //Validazione form
+  const [formData, setFormData] = useState({
+    name: '',
+    symbol: '',
+    description: ''
+  });
+
+  const handleChange = (e: { target: { name: any; value: any; }; }) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    // Esegui qui la logica per gestire il submit del form
+    // Ad esempio, puoi validare i dati qui prima di inviarli al server
+    console.log(formData); // Esempio di cosa fare con i dati del form
+  };
+  //
+
+
 
   useEffect(() => {
     setPhotoStart(smartphone);
@@ -99,6 +123,11 @@ function Home() {
     setPhoto('');
     setMessage('');
     setPhotoStartBoolean(true);
+    setFormData({
+      name: '',
+      symbol: '',
+      description: ''
+    });
   };
 
   const takeNewPhoto = () => {
@@ -107,6 +136,11 @@ function Home() {
     setMessage('');
     setUploading(false);
     setuploaderror(false);
+    setFormData({
+      name: '',
+      symbol: '',
+      description: ''
+    });
   };
 
   return (
@@ -156,15 +190,17 @@ function Home() {
                   <>
                     {/* <Button className='marginRight' onClick={uploadPhoto}>Upload photo</Button> */}
 
-                    
-                    <Form>
 
+                    <Form onSubmit={handleSubmit}>
                       <FormGroup>
                         <Input
                           id="name"
                           name="name"
                           type="text"
                           placeholder="Inserisci titolo"
+                          value={formData.name}
+                          onChange={handleChange}
+                          required  // Campo obbligatorio
                         />
                       </FormGroup>
 
@@ -172,8 +208,11 @@ function Home() {
                         <Input
                           id="symbol"
                           name="symbol"
-                          placeholder="Inserisci simbolo"
                           type="text"
+                          placeholder="Inserisci simbolo"
+                          value={formData.symbol}
+                          onChange={handleChange}
+                          required  // Campo obbligatorio
                         />
                       </FormGroup>
 
@@ -183,14 +222,15 @@ function Home() {
                           name="description"
                           type="textarea"
                           placeholder="Inserisci descrizione"
+                          value={formData.description}
+                          onChange={handleChange}
+                          required  // Campo obbligatorio
                         />
                       </FormGroup>
 
-                      <FormGroup>
-                      <Button onClick={() => selectedFile && uploadPhoto(selectedFile, 'NFT Name', 'Pinga ponga', 'NFT')}>Upload photo</Button>
-                      </FormGroup>
+                      <Button type="submit">Invia</Button>
                     </Form>
-                 
+
                     <Button onClick={deletePhoto}>Delete Photo</Button>
                   </>
                 ) : (
