@@ -231,7 +231,7 @@ function Home() {
                         />
                       </FormGroup>
 
-                      <Button type="submit">Invia</Button>
+                      <Button type="submit">Upload Photo</Button>
                     </Form>
 
                     <Button onClick={deletePhoto}>Delete Photo</Button>
@@ -244,7 +244,7 @@ function Home() {
 
                 {uploaderror ? (
                   <>
-                    <Button className='marginRight' onSubmit={handleSubmit}>Upload again</Button>
+                    <Button className='marginRight' onClick={handleSubmit}>Upload again</Button>
                   </>
                 ) : (
                   <>
