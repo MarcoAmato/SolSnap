@@ -35,6 +35,8 @@ function Home() {
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
+
+    
     // Esegui qui la logica per gestire il submit del form
     // Ad esempio, puoi validare i dati qui prima di inviarli al server
     console.log(formData); // Esempio di cosa fare con i dati del form
@@ -241,7 +243,7 @@ function Home() {
 
                 {uploaderror ? (
                   <>
-                    <Button className='marginRight' onClick={() => selectedFile && uploadPhoto(selectedFile, 'NFT Name', 'Pinga ponga', 'NFT')}>Upload again</Button>
+                    <Button className='marginRight' onSubmit={handleSubmit}>Upload again</Button>
                   </>
                 ) : (
                   <>
