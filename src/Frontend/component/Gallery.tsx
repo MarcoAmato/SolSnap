@@ -7,7 +7,7 @@ class ImageData {
     public name: string,
     public description: string,
     public symbol: string,
-    public src: string
+    public url: string
   ) { }
 }
 
@@ -82,12 +82,12 @@ function Gallery() {
     const [imageUri, setImageUri] = useState('');
 
     useEffect(() => {
-      fetchImageUri(image.src).then(setImageUri);
-    }, [image.src]);
+      fetchImageUri(image.url).then(setImageUri);
+    }, [image.url]);
 
     const handleViewClick = async () => {
       setSelectedImage(image);
-      const uri = await fetchImageUri(image.src);
+      const uri = await fetchImageUri(image.url);
       setSelectedImageUri(uri);
       toggle();
     };
@@ -98,7 +98,7 @@ function Gallery() {
           {imageUri ? <img src={imageUri} alt="Fetched content" /> : <p>Loading...</p>}
           <CardBody>
             <CardTitle tag="h5">{image.name}</CardTitle>
-            <Button onClick={handleViewClick}>Visualizza</Button>
+            <Button onClick={handleViewClick}>View details</Button>
           </CardBody>
         </Card>
       </Col>
@@ -149,19 +149,19 @@ function Gallery() {
           )}
         </ModalBody>
         <ModalFooter>
-        <a target="_blank" href={""}><Button color="success">
-            Nft image
+        <a target="_blank" href={selectedImage?.url}><Button color="success">
+            Nft details
           </Button></a>
           {selectedImage && (
             <Button color="danger" onClick={() => {
               deleteNFT(selectedImage.id);
               toggle();
             }}>
-              Elimina
+              Delete
             </Button>
           )}
           <Button color="secondary" onClick={toggle}>
-            Chiudi
+            Close
           </Button>
         </ModalFooter>
       </Modal>
