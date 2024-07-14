@@ -4,7 +4,7 @@ import { Button, Card, CardBody, CardSubtitle, CardText, CardTitle, Col, Contain
 class ImageData {
   constructor(
     public id: number,
-    public name: string, 
+    public name: string,
     public description: string,
     public symbol: string,
     public src: string
@@ -14,6 +14,9 @@ class ImageData {
 function Gallery() {
   const [images, setImages] = useState<ImageData[]>([]);
   const [modal, setModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
+  const [selectedImageUri, setSelectedImageUri] = useState<string>('');
+
   const toggle = () => setModal(!modal);
 
   useEffect(() => {
@@ -34,7 +37,7 @@ function Gallery() {
     fetchData();
   }, []);
 
-  const fetchImageUri = async (src: RequestInfo | URL) => {
+  const fetchImageUri = async (src: string) => {
     try {
       // First fetch to get the JSON response
       const initialResponse = await fetch(src);
@@ -77,40 +80,25 @@ function Gallery() {
 
   const ImageCard = ({ image }: { image: ImageData }) => {
     const [imageUri, setImageUri] = useState('');
+
     useEffect(() => {
       fetchImageUri(image.src).then(setImageUri);
     }, [image.src]);
+
+    const handleViewClick = async () => {
+      setSelectedImage(image);
+      const uri = await fetchImageUri(image.src);
+      setSelectedImageUri(uri);
+      toggle();
+    };
+
     return (
       <Col sm={4}>
         <Card style={{ width: '18rem' }}>
           {imageUri ? <img src={imageUri} alt="Fetched content" /> : <p>Loading...</p>}
           <CardBody>
             <CardTitle tag="h5">{image.name}</CardTitle>
-{/*             <CardSubtitle className="mb-2 text-muted" tag="h6">Descrizione</CardSubtitle>
-            <CardText>{image.description}</CardText> */}
-            <Button onClick={toggle}>Visualizza</Button>
-
-            <Modal isOpen={modal} toggle={toggle}>
-              <ModalHeader>{image.name}</ModalHeader>
-              <ModalBody >
-                {imageUri ? <img style={{ width: '30rem' }} src={imageUri} alt="Fetched content" /> : <p>Loading...</p>}
-                <><br/></>
-                {image.description}
-                <p><strong>Symbol:</strong> {image.symbol}</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" onClick={() => {
-                  deleteNFT(image.id);
-                  toggle();
-                }}>
-                  Elimina
-                </Button>
-                <Button color="secondary" onClick={toggle}>
-                  Chiudi
-                </Button>
-              </ModalFooter>
-            </Modal>
-
+            <Button onClick={handleViewClick}>Visualizza</Button>
           </CardBody>
         </Card>
       </Col>
@@ -143,6 +131,37 @@ function Gallery() {
           {renderImageRows()}
         </Container>
       </div>
+
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader>{selectedImage?.name}</ModalHeader>
+        <ModalBody>
+          {selectedImage && (
+            <>
+              {selectedImageUri ? (
+                <img style={{ width: '30rem' }} src={selectedImageUri} alt="Fetched content" />
+              ) : (
+                <p>Loading...</p>
+              )}
+              <br />
+              <p style={{ wordBreak: 'break-all' }}><strong>Description: </strong> {selectedImage.description}</p>
+              <p><strong>Symbol: </strong> {selectedImage.symbol}</p>
+            </>
+          )}
+        </ModalBody>
+        <ModalFooter>
+          {selectedImage && (
+            <Button color="danger" onClick={() => {
+              deleteNFT(selectedImage.id);
+              toggle();
+            }}>
+              Elimina
+            </Button>
+          )}
+          <Button color="secondary" onClick={toggle}>
+            Chiudi
+          </Button>
+        </ModalFooter>
+      </Modal>
     </>
   );
 }

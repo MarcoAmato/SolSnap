@@ -3,6 +3,7 @@ import '../css/Style.css';
 import { Button, Form, FormGroup, Input } from 'reactstrap';
 import smartphone from '../img/smartphone.png';
 import loading_spinner from '../img/loading-spinner.gif';
+import imgLogo from '../img/imgLogo.png';
 import { IMAGE_FOLDER } from '../../constants';
 
 function Home() {
@@ -151,9 +152,9 @@ function Home() {
 
       <div className="App">
         <header className="App-header">
-
-          <h1>Create your NFT Photo</h1>
-          <p>Solsnap</p>
+        <img className="logoHome" src={imgLogo}/>
+{/*           <h1>Create your NFT Photo</h1>
+          <p style={{ color: 'green' }}>Solsnap</p> */}
 
           <div id="upload-photo">
 
@@ -231,10 +232,10 @@ function Home() {
                         />
                       </FormGroup>
 
-                      <Button type="submit">Upload Photo</Button>
+                      <Button className='marginBottom' type="submit">Upload Photo</Button>
                     </Form>
 
-                    <Button onClick={deletePhoto}>Delete Photo</Button>
+                    <Button className='marginBottom' onClick={deletePhoto}>Delete Photo</Button>
                   </>
                 ) : (
                   <>
