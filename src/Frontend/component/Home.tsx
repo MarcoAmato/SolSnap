@@ -168,7 +168,7 @@ function Home() {
                 {/* Photo is located in img folder */}
                 {/*                 <img src={photo} alt="Uploaded photo" width="650" height="350" />
                 <br /> */}
-                <Button onClick={takePhoto}>Take a photo</Button>
+                <Button className="marginBottom" onClick={takePhoto}>Take a photo</Button>
               </>
             )}
 
@@ -254,7 +254,7 @@ function Home() {
 
                 {uploadeffected ? (
                   <>
-                    <Button onClick={takeNewPhoto}>Take a new Photo</Button>
+                    <Button onClick={takeNewPhoto} className="marginBottom">Take a new Photo</Button>
                   </>
                 ) : (
                   <>
