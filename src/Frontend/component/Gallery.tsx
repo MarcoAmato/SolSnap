@@ -149,6 +149,9 @@ function Gallery() {
           )}
         </ModalBody>
         <ModalFooter>
+        <a target="_blank" href={""}><Button color="success">
+            Nft image
+          </Button></a>
           {selectedImage && (
             <Button color="danger" onClick={() => {
               deleteNFT(selectedImage.id);
